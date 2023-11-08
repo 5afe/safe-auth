@@ -66,19 +66,15 @@ document
     );
 
     // Create a Safe transaction with the provided parameters
-    const safeTransactionData: MetaTransactionData = {
-      to: signInData?.eoa || '0x', // Address to send the funds from the Safe
-      data: '0x',
-      value: ethers.utils.parseUnits('0.0001', 'ether').toString(),
-    };
-
-    const safeTransaction = await protocolKit.createTransaction({
-      safeTransactionData,
+    const tx = await protocolKit.createTransaction({
+      safeTransactionData: {
+        to: signInData?.eoa || '0x', // Address to send the funds from the Safe
+        data: '0x',
+        value: ethers.utils.parseUnits('0.0001', 'ether').toString(),
+      },
     });
 
-    await protocolKit.signTransaction(safeTransaction);
-
-    await protocolKit.executeTransaction(safeTransaction);
+    await protocolKit.executeTransaction(tx);
 
     const finalBalance = await protocolKit.getBalance();
 
