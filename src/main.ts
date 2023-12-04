@@ -1,30 +1,25 @@
 import {
   SafeAuthPack,
-  SafeAuthConfig,
   SafeAuthInitOptions,
   AuthKitSignInData,
 } from '@safe-global/auth-kit';
-import { MetaTransactionData } from '@safe-global/safe-core-sdk-types';
 import Safe, { EthersAdapter } from '@safe-global/protocol-kit';
 import { ethers } from 'ethers';
-import { SUPPORTED_NETWORKS } from '@toruslabs/ethereum-controllers';
 
 let signInData: AuthKitSignInData;
 let provider: ethers.providers.Web3Provider;
-
-// Use the desired txServiceUrl
-const safeAuthConfig: SafeAuthConfig = {
-  txServiceUrl: 'https://safe-transaction-gnosis-chain.safe.global',
-};
 
 // Configure the chain. Same as the txServiceUrl above
 const safeAuthInitOptions: SafeAuthInitOptions = {
   enableLogging: true,
   showWidgetButton: false,
-  chainConfig: SUPPORTED_NETWORKS['0x64'],
+  chainConfig: {
+    rpcTarget: 'https://gnosis.drpc.org',
+    chainId: '0x64',
+  },
 };
 
-const safeAuthPack = new SafeAuthPack(safeAuthConfig);
+const safeAuthPack = new SafeAuthPack();
 await safeAuthPack.init(safeAuthInitOptions);
 
 document.querySelector('#sign-in')?.addEventListener('click', async () => {
